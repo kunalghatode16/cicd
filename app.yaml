@@ -1,0 +1,42 @@
+runtime: python312
+# runtime: custom
+# env: flex
+
+# runtime_config:
+#     operating_system: "ubuntu22"
+#     runtime_version: "3.12"
+
+service: dev-capabilities-api
+
+# VPC Access Connector
+vpc_access_connector:
+  name: "projects/tellagence-platform/locations/us-central1/connectors/tp-vpc-connector"
+  egress_setting: all-traffic
+  # ingress_setting: all-traffic
+
+# network:
+#   name: tellagence-platform-vpc
+#   subnetwork_name : tellagence-platform-subnet-1
+
+# handlers:
+#   - url: /.*  # This regex matches all URLs
+#     script: auto  # This tells App Engine to use the default entry point
+
+env_variables:
+  MONGO_URL: "mongodb+srv://akshay:SrKJYcw0sshaY1ND@capabilities-dev.7hdhgf4.mongodb.net/"
+  MONGO_DB_NAME: "capabilities"
+  CAPABILITIES_HOSTNAME: "0.0.0.0"
+  CAPABILITIES_PORT: "8080"  # App Engine uses port 8080 by default
+
+# Instance class
+instance_class: F4
+
+# Optional: automatic scaling settings
+automatic_scaling:
+#   target_cpu_utilization: 0.65
+  # min_num_instances: 5
+  min_instances: 8
+  # max_instances: 5
+
+# entrypoint: uvicorn main:app --reload
+entrypoint: uvicorn main:app --host 0.0.0.0 --port 8080 --reload --workers 4
