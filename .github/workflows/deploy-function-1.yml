@@ -3,7 +3,7 @@ name: Deploy Cloud Function 1
 on:
   push:
     paths:
-      - 'cloud-function-1/**'  # Only trigger this workflow if there are changes in the cloud-function-1 folder
+      - 'function1/**'  # Only trigger this workflow if there are changes in the cloud-function-1 folder
 
 jobs:
   deploy:
