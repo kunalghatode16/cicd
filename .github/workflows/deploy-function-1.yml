@@ -1,0 +1,32 @@
+name: Deploy Cloud Function 1
+
+on:
+  push:
+    paths:
+      - 'cloud-function-1/**'  # Only trigger this workflow if there are changes in the cloud-function-1 folder
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Google Cloud SDK
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+
+      # Step 3: Deploy Cloud Function 1
+      - name: Deploy Cloud Function 1
+        run: |
+          cd cloud-function-1
+          gcloud functions deploy cloud_function_1 \
+            --runtime python312 \
+            --trigger-http \
+            --allow-unauthenticated \
+            --region us-central1
